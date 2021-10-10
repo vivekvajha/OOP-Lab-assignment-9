@@ -1,0 +1,239 @@
+#include<iostream>
+using namespace std;
+
+class bank_account //base class bank_account created
+{
+    protected:
+    char name[30];
+    char address[100];
+    int sav_no, pin, con_pin, amt, age, balance;
+    
+    public:
+    void open_acct()    //member function for opening bank account
+    {
+        cout<<"*****Open bank account*****"<<endl;
+        cout<<"Enter you name: "<<endl;
+        cin>>name;
+        cout<<"Enter your address: "<<endl;
+        cin>>address;
+        cout<<"Enter your age: "<<endl;
+        cin>>age;
+        cout<<"Create pin: "<<endl;
+        cin>>pin;
+        cout<<"Confirm pin: "<<endl;
+        cin>>con_pin;
+        if(pin==con_pin)
+        {
+            cout<<"Your Account has been created successfully"<<endl;
+        }
+        else
+        {
+            cout<<"The pins do not match please try again"<<endl;
+        }
+        
+    }
+    void deposit() //member function for depositing money
+    {
+        cout<<"Enter the amount to deposit: ";
+        cin>>balance;
+    }
+    void withdraw() //member function for withdrawing money
+    {
+        cout<<"Enter the amount to withdraw: ";
+        cin>>amt;
+        balance=balance-amt;
+        cout<<"Updated amount after withdrawal: "<<balance<<endl;
+    }
+    void display_details() //member function for displaying details
+    {
+        cout<<"Name: "<<name<<endl;
+        cout<<"Address: "<<address<<endl;
+        cout<<"Age: "<<age<<endl;
+        cout<<"Your current balance: "<<balance<<endl;
+    }
+};
+
+class life_insurance:virtual public bank_account //class life_insurance derived from base class bank_account
+{
+    protected:
+    int policy_no, premium, term, life_balance, sum_assured;
+    public:
+    void read_life_data()  //member function for reading life insurance data
+    {
+        cout<<"Enter your policy no. : ";
+        cin>>policy_no;
+        cout<<"Enter the no. of years: ";
+        cin>>term;
+        cout<<"Enter the amount of assured sum: ";
+        cin>>sum_assured;
+    }
+    void calculate_life_premium()  //member function for calculating life insurance premium
+    {
+        if(age<=25)
+        {
+            premium= 3000*(sum_assured/100000);
+            cout<<"Your premium per lakh is: "<<premium<<endl;
+            cout<<"Your total premium: "<<premium*term<<endl;
+        }
+        else if(age>=26 && age<=45)
+        {
+            premium= 4000*(sum_assured/100000);
+            cout<<"Your premium per lakh is: "<<premium<<endl;
+            cout<<"Your total premium: "<<premium*term<<endl;
+            
+        }
+        else if(age>=46 && age<=60)
+        {
+            premium= 5000*(sum_assured/100000);
+            cout<<"Your premium per lakh is: "<<premium<<endl;
+            cout<<"Your total premium: "<<premium*term<<endl;
+        }
+        else if(age>61)
+        {
+            cout<<"No insurance will be provided"<<endl;
+        }
+        
+    }
+    void updated_life_balance()  //member function for updating the balance
+    {
+        life_balance=balance-premium;
+        cout<<"Your balance after deducting the premium amount from your account is: "<<life_balance<<endl;
+    }
+    void lifeins_details()    //member function for displaying details
+    {
+        cout<<"Name: "<<name<<endl;
+        cout<<"Address: "<<address<<endl;
+        cout<<"Age: "<<age<<endl;
+    }
+};
+
+class car_insurance:virtual public bank_account //class car_insurance derived from base class bank_account
+{
+    protected:
+    int policyno, carAge, car_premium, car_term, sumAssured=800000, car_balance;
+    char brand[30], model[30];
+    
+    public:
+    void read_car_data() //member function for reading the car insurance data
+    {
+        cout<<"Enter your policy no.: ";
+        cin>>policyno;
+        cout<<"Enter your car age: ";
+        cin>>carAge;
+        cout<<"Enter the number of years: ";
+        cin>>car_term;
+    }
+    void calculate_car_premium() //member function for calcu car insurance premium
+    {
+        if(carAge<2)
+        {
+            car_premium=5000*(sumAssured/100000);
+            cout<<"Your premium per lakh is: "<<car_premium<<endl;
+            cout<<"Your total premium: "<<car_premium*car_term<<endl;
+        }
+        else if(carAge>2 && carAge<=4)
+        {
+            car_premium=3000*(sumAssured/100000);
+            cout<<"Your premium per lakh is: "<<car_premium<<endl;
+            cout<<"Your total premium: "<<car_premium*car_term<<endl; 
+        }
+        else if(carAge>5 && carAge<=7)
+        {
+            car_premium=2000*(sumAssured/100000);
+            cout<<"Your premium per lakh is: "<<car_premium<<endl;
+            cout<<"Your total premium: "<<car_premium*car_term<<endl;
+        }
+        else if(carAge>=8)
+        {
+            cout<<"No insurance will be provided"<<endl;
+        }
+    }
+    void updated_car_balance() //member function for updating the balance
+    {
+        car_balance=balance-car_premium;
+        cout<<"Your balance after deducting the premium amount from your account: "<<car_balance<<endl;
+    }
+    void carins_details() //member function for displaying details
+    {
+        cout<<"Name: "<<name<<endl;
+        cout<<"Address: "<<address<<endl;
+        cout<<"Age: "<<age<<endl;
+        cout<<"Car age: "<<carAge<<endl;
+    }
+};
+
+class claim:public life_insurance, public car_insurance //class claim derived from 2 classes:-
+{                                                       //class life_insurance and class car_insurance
+    protected:
+    int duration, policy_amt, damages;
+    public:
+    void life_settlement() //member function for calculating the settlement on life insurance
+    {
+        cout<<"Enter your policy duration: ";
+        cin>>duration;
+        
+        if(duration<=5)
+        {
+            cout<<"Sorry no amount of money will be provided"<<endl;
+        }
+        else if(duration>=6 && duration<=12)
+        {
+            policy_amt= sum_assured-(0.25*sum_assured);
+            cout<<"Amount that will be provided: "<<policy_amt<<endl;
+        }
+        else if(duration>=13 && duration<=20)
+        {
+            policy_amt= (sum_assured-(0.50*sum_assured))+ 0.20*sum_assured;
+            cout<<"Amount that will be provided: "<<policy_amt<<endl;
+        }
+        else if(duration>21)
+        {
+            policy_amt= sum_assured+sum_assured;
+            cout<<"Amount that will be provided: "<<policy_amt<<endl;
+        }
+        cout<<"Your balance after the policy amount is added into your sav. acc.: "<<life_balance+policy_amt<<endl;
+    }
+    void car_settlement() //member function for calculating the settlement on car insurance
+    {
+        cout<<"Enter the total amount spent on car damages: ";
+        cin>>damages;
+        
+        cout<<"Your balance after the policy amount is added into your sav. acc.: "<<car_balance+damages<<endl;
+    }
+};
+
+int main()
+{
+    int choice;
+    
+    cout<<"Enter '1' for life insurance and '2' for car insurance: ";
+    cin>>choice;
+    
+    if(choice==1) //for life insurance
+    {
+        claim a;  //object a created for claim class (life insurance)
+        a.open_acct();
+        a.deposit();
+        a.withdraw();
+        a.display_details();
+        a.read_life_data();
+        a.calculate_life_premium();
+        a.updated_life_balance();
+        a.lifeins_details();
+        a.life_settlement();
+    }
+    
+    if(choice==2) //for car insurance
+    {
+        claim b;  //object b created for claim class (car insurance)
+        b.open_acct();
+        b.deposit();
+        b.withdraw();
+        b.display_details();
+        b.read_car_data();
+        b.calculate_car_premium();
+        b.updated_car_balance();
+        b.carins_details();
+        b.car_settlement();
+    }
+}
